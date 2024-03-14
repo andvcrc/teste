@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acesso ao Acelerômetro</title>
+</head>
+<body>
+    <h1>Valores do Acelerômetro</h1>
+    <p id="xValue">X: </p>
+    <p id="yValue">Y: </p>
+    <p id="zValue">Z: </p>
+
+    <script>
+        // Solicitar permissão ao usuário para acessar os sensores do dispositivo
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener("devicemotion", function(event) {
+                            var acceleration = event.acceleration;
+                            if (acceleration) {
+                                document.getElementById("xValue").textContent = "X: " + acceleration.x;
+                                document.getElementById("yValue").textContent = "Y: " + acceleration.y;
+                                document.getElementById("zValue").textContent = "Z: " + acceleration.z;
+                            }
+                        });
+                    } else {
+                        // Usuário negou permissão
+                        console.log('Permissão para acessar o acelerômetro negada pelo usuário.');
+                    }
+                })
+                .catch(console.error);
+        } else {
+            // Navegador não suporta solicitação de permissão
+            console.log('Navegador não suporta solicitação de permissão para acessar o acelerômetro.');
+        }
+    </script>
+</body>
+</html>
